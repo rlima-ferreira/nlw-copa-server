@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import ShortUniqueId from 'short-unique-id';
 
 async function main() {
   const prisma = new PrismaClient();
@@ -8,12 +9,13 @@ async function main() {
       name: 'Jonh Doe',
       email: 'jonh.doe@gmail.com',
       avatarUrl: null,
+      googleId: String(new ShortUniqueId()()),
     },
   });
 
-  const pool = await prisma.pool.create({
+  const poll = await prisma.poll.create({
     data: {
-      title: 'Pool 1',
+      title: 'Poll 1',
       code: 'PO001',
       ownerId: user.id,
       participants: { create: { userId: user.id } },
@@ -38,7 +40,7 @@ async function main() {
           firstTeamPoints: 2,
           secondTeamPoints: 1,
           participant: {
-            connect: { userId_poolId: { userId: user.id, poolId: pool.id } },
+            connect: { userId_pollId: { userId: user.id, pollId: poll.id } },
           },
         },
       },
